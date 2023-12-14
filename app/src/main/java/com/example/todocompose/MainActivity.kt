@@ -1,4 +1,4 @@
-package setu.app.footballmanager
+package com.example.todocompose
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,37 +10,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import setu.app.footballmanager.ui.theme.FootballManagerTheme
+import com.example.todocompose.ui.TodoScreen
+import com.example.todocompose.ui.theme.ToDoComposeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            FootballManagerTheme {
+            ToDoComposeTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    TodoScreen()
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    FootballManagerTheme {
-        Greeting("Android")
     }
 }

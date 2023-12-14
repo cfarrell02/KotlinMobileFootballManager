@@ -1,4 +1,4 @@
-package setu.app.footballmanager.ui.theme
+package com.example.todocompose.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -13,5 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Football Manager"
+rootProject.name = "ToDoCompose"
 include(":app")
+ 

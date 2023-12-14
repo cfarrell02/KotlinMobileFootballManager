@@ -1,4 +1,4 @@
-package setu.app.footballmanager
+package com.example.todocompose
 
 import org.junit.Test
 
