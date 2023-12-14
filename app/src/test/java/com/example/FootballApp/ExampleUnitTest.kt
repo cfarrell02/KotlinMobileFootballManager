@@ -1,4 +1,4 @@
-package com.example.todocompose
+package com.example.FootballApp
 
 import org.junit.Test
 

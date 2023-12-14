@@ -1,4 +1,4 @@
-package com.example.todocompose.ui.theme
+package com.example.FootballApp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
