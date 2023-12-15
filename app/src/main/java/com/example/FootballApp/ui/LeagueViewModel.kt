@@ -1,3 +1,4 @@
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -6,14 +7,14 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.FootballApp.FootballApp
 import com.example.FootballApp.data.LeagueRepository
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.setu.model.League
 
 class LeagueViewModel(private val leagueRepository: LeagueRepository) : ViewModel() {
 
-    private val _leagues = MutableStateFlow<List<League>>(emptyList())
-    val leagues = _leagues.asStateFlow()
+    val leagues = mutableStateOf<List<League>>(emptyList())
 
     init {
         refreshLeagues()
@@ -24,16 +25,12 @@ class LeagueViewModel(private val leagueRepository: LeagueRepository) : ViewMode
     }
 
     fun addLeague(league: League) {
-        viewModelScope.launch {
-            leagueRepository.addLeague(league)
-            refreshLeagues()
-        }
+        leagueRepository.addLeague(league)
+        refreshLeagues()
     }
 
     private fun refreshLeagues() {
-        viewModelScope.launch {
-            _leagues.value = leagueRepository.getLeagues()
-        }
+        leagues.value = leagueRepository.getLeagues()
     }
 
     companion object {

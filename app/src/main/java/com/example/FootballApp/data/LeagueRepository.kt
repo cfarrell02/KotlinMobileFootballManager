@@ -1,12 +1,19 @@
 package com.example.FootballApp.data
 
 import org.setu.model.League
+import kotlinx.coroutines.flow.Flow
 
 interface LeagueRepository {
 
-    fun addLeague(league: League)
+    suspend fun addLeague(league: League)
 
-    fun updateLeague(league: League)
+    suspend fun updateLeague(league: League)
 
-    fun getLeagues(): List<League>
+    fun getLeagues(): Flow<List<League>>
+
+    fun getLeagueById(id: Int): Flow<League>
+
+    suspend fun deleteLeague(league: League)
+
+
 }

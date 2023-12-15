@@ -1,5 +1,8 @@
 package org.setu.model
 
+import androidx.room.Entity
+
+@Entity(tableName = "league_table")
 class League (
     var name: String,
     var country: String,
