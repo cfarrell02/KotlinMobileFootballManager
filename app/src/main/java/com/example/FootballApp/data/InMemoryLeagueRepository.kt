@@ -1,31 +1,39 @@
 package com.example.FootballApp.data
 
+
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
 import org.setu.model.League
 
-class InMemoryLeagueRepository: LeagueRepository {
-    private var leagues = mutableListOf<League>()
+class InMemoryLeagueRepository : LeagueRepository {
+    private val _leagues = MutableStateFlow<MutableList<League>>(mutableListOf())
+
     override suspend fun addLeague(league: League) {
-        leagues.add(league)
+        _leagues.value.add(league)
+        _leagues.value = _leagues.value.toMutableList() // Emit a new list to the Flow
     }
 
-    override fun getLeagueById(id: Int): Flow<League> {
-        TODO("Not yet implemented")
+    override fun getLeagueById(id: String): Flow<League> {
+        return _leagues.map { leagues ->
+            leagues.first { it.uid == id }
+        }
     }
 
     override suspend fun deleteLeague(league: League) {
-        TODO("Not yet implemented")
+        _leagues.value.remove(league)
+        _leagues.value = _leagues.value.toMutableList() // Emit a new list to the Flow
     }
 
     override suspend fun updateLeague(league: League) {
-        val index = leagues.indexOfFirst { it.uid == league.uid }
+        val index = _leagues.value.indexOfFirst { it.uid == league.uid }
         if (index != -1) {
-            leagues[index] = league
+            _leagues.value[index] = league
+            _leagues.value = _leagues.value.toMutableList() // Emit a new list to the Flow
         }
     }
 
     override fun getLeagues(): Flow<List<League>> {
-        TODO()
+        return _leagues
     }
-
 }

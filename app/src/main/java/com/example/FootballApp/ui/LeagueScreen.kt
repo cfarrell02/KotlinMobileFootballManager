@@ -13,9 +13,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import org.setu.model.League
 
 
@@ -55,7 +60,7 @@ fun FloatingAddLeagueButton(onClick: () -> Unit) {
 
 @Composable
 fun LeaguesScreen(leaguesViewModel: LeagueViewModel = viewModel(factory = LeagueViewModel.Factory)) {
-    val leagues = leaguesViewModel.leagues
+    val leagues = leaguesViewModel.leagues.collectAsState(initial = emptyList())
 
     Column(
         modifier = Modifier
@@ -68,7 +73,10 @@ fun LeaguesScreen(leaguesViewModel: LeagueViewModel = viewModel(factory = League
 
         FloatingAddLeagueButton(onClick = {
             val time = System.currentTimeMillis()
-            leaguesViewModel.addLeague(League("Test", "Time at $time", "Test"))
+            val league = League("League $time", "Country $time", "crestUrl $time")
+            leaguesViewModel.viewModelScope.launch {
+                leaguesViewModel.addLeague(league)
+            }
         })
     }
 }

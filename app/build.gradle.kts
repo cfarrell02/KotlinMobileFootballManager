@@ -5,9 +5,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
-    id("kotlin-kapt") // Applying Kotlin Kapt plugin
-}
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10" }
 
 android {
     namespace = "com.example.FootballApp"
@@ -69,7 +67,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
     // Room dependencies
     implementation("androidx.room:room-runtime:2.4.0")
-    kapt("androidx.room:room-compiler:2.4.0")
     implementation("androidx.room:room-ktx:2.4.0")
 
     testImplementation("junit:junit:4.13.2")

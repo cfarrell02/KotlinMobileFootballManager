@@ -16,7 +16,7 @@ class PersistentLeagueRepository(private val leagueDao: leagueDao) : LeagueRepos
         return leagueDao.getAllLeagues()
     }
 
-    override fun getLeagueById(id: Int): Flow<League> {
+    override fun getLeagueById(id: String): Flow<League> {
         return leagueDao.getLeagueById(id)
     }
 

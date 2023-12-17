@@ -11,7 +11,7 @@ interface LeagueRepository {
 
     fun getLeagues(): Flow<List<League>>
 
-    fun getLeagueById(id: Int): Flow<League>
+    fun getLeagueById(id: String): Flow<League>
 
     suspend fun deleteLeague(league: League)
 

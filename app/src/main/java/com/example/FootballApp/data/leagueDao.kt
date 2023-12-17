@@ -18,7 +18,7 @@ interface leagueDao {
     fun getAllLeagues(): Flow<List<League>>
 
     @Query("SELECT * FROM league_table WHERE uid = :id")
-    fun getLeagueById(id: Int): Flow<League>
+    fun getLeagueById(id: String): Flow<League>
 
 
 }
