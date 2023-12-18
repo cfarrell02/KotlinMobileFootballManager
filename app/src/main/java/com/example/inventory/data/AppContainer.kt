@@ -17,6 +17,11 @@
 package com.example.inventory.data
 
 import android.content.Context
+import com.example.inventory.network.LeagueAPIService
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
+import retrofit2.Retrofit
 
 /**
  * App container for Dependency injection.
@@ -29,10 +34,16 @@ interface AppContainer {
  * [AppContainer] implementation that provides instance of [OfflineItemsRepository]
  */
 class AppDataContainer(private val context: Context) : AppContainer {
-    /**
-     * Implementation for [ItemsRepository]
-     */
+    private val baseUrl = "https://api-football-v1.p.rapidapi.com/v3/"
+
+    private val retrofit = Retrofit.Builder()
+        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .baseUrl(baseUrl)
+        .build()
+    private val retrofitService: LeagueAPIService by lazy {
+        retrofit.create(LeagueAPIService::class.java)
+    }
     override val itemsRepository: LeagueRepository by lazy {
-        OfflineLeagueRepository(InventoryDatabase.getDatabase(context).leagueDao())
+        OfflineLeagueRepository(InventoryDatabase.getDatabase(context).leagueDao(), retrofitService)
     }
 }

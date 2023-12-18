@@ -16,6 +16,7 @@ interface LeagueRepository {
 
     suspend fun updateLeague(league: League)
 
+    suspend fun searchLeague(query: String): List<League>
 
 
 }

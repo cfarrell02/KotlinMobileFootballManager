@@ -9,7 +9,7 @@ class League (
     var country: String,
     var crestUrl: String,
     @PrimaryKey(autoGenerate = true)
-    val uid: Int
+    val uid: Int = 0
 ) {
 
     init{

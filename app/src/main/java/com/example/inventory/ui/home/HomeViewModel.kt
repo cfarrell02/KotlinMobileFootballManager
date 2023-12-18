@@ -23,12 +23,28 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import org.setu.model.League
 
 /**
  * ViewModel to retrieve all items in the Room database.
  */
-class HomeViewModel(leaguesRepository: LeagueRepository) : ViewModel() {
+class HomeViewModel(private val leaguesRepository: LeagueRepository) : ViewModel() {
+
+    fun addLeague(league: League) {
+        viewModelScope.launch {
+            leaguesRepository.insertLeague(league)
+        }
+    }
+
+    fun searchLeague(leagueName: String) {
+        viewModelScope.launch {
+            val searchResults = leaguesRepository.searchLeague(leagueName)
+            assert(searchResults.isNotEmpty())
+            leaguesRepository.insertLeague(searchResults[0])
+        }
+    }
+
 
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
@@ -41,6 +57,7 @@ class HomeViewModel(leaguesRepository: LeagueRepository) : ViewModel() {
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
                 initialValue = HomeUiState()
             )
+
 
 
 }
