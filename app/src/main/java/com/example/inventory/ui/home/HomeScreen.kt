@@ -63,8 +63,9 @@
         import org.setu.model.League
 
         object HomeDestination : NavigationDestination {
-            override val route = "home"
+            override val route = "league"
             override val titleRes = R.string.app_name
+            val routeWithArgs = route
         }
 
         /**
@@ -74,7 +75,6 @@
         @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
         @Composable
         fun HomeScreen(
-            navigateToLeagueEntry: () -> Unit,
             navigateToLeagueUpdate: (Int) -> Unit,
             modifier: Modifier = Modifier,
             viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)

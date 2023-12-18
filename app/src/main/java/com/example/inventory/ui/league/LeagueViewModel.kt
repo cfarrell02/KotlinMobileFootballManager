@@ -2,25 +2,29 @@ package com.example.inventory.ui.league
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import org.setu.model.League
+import kotlinx.coroutines.launch
+import org.setu.model.Club
 
-//class LeagueViewModel()
-//    var leagueUiState by mutableStateOf(LeagueUiState())
-//        private set
-//
-//    private val leagueId: Int = checkNotNull(savedStateHandle[LeagueDestination.leagueIdArg])
-//
-//    init {
-//        viewModelScope.launch {
-//            leagueUiState = leaguesRepository.getLeagueStream(leagueId)
+class LeagueViewModel: ViewModel() {
+
+    //private val leaguesRepository = OfflineLeagueRepository()
+
+    var leagueUiState by mutableStateOf(LeagueUiState())
+        private set
+
+
+    init {
+        viewModelScope.launch {
+//            leagueUiState = leaguesRepository.getAllLeaguesStream()
 //                .filterNotNull()
 //                .first()
 //                .toLeagueUiState(true)
-//        }
-//    }
-//}
+        }
+    }
+}
 
 
-data class LeagueUiState(val leagueList: List<League> = listOf())
+data class LeagueUiState(val leagueList: List<Club> = listOf())
