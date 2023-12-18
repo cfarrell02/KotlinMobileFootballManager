@@ -14,21 +14,25 @@
  * limitations under the License.
  */
 
-@file:Suppress("UnstableApiUsage")
+package com.example.inventory.data
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        google()
-        mavenCentral()
+import android.content.Context
+
+/**
+ * App container for Dependency injection.
+ */
+interface AppContainer {
+    val itemsRepository: LeagueRepository
+}
+
+/**
+ * [AppContainer] implementation that provides instance of [OfflineItemsRepository]
+ */
+class AppDataContainer(private val context: Context) : AppContainer {
+    /**
+     * Implementation for [ItemsRepository]
+     */
+    override val itemsRepository: LeagueRepository by lazy {
+        OfflineLeagueRepository(InventoryDatabase.getDatabase(context).leagueDao())
     }
 }
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-rootProject.name = "Inventory"
-include(":app")
