@@ -40,4 +40,6 @@
     <string name="league_details">League Details</string>
     <string name="league_type">League Type</string>
     <string name="update_league">Update League</string>
+    <string name="clubs">Clubs</string>
+    <string name="no_clubs">No clubs in this league, hit \'+\' to add some!</string>
 </resources>

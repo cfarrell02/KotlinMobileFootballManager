@@ -28,6 +28,7 @@ import retrofit2.Retrofit
  */
 interface AppContainer {
     val itemsRepository: LeagueRepository
+    val clubsRepository: OfflineClubRepository
 }
 
 /**
@@ -45,5 +46,8 @@ class AppDataContainer(private val context: Context) : AppContainer {
     }
     override val itemsRepository: LeagueRepository by lazy {
         OfflineLeagueRepository(InventoryDatabase.getDatabase(context).leagueDao(), retrofitService)
+    }
+    override val clubsRepository: OfflineClubRepository by lazy {
+        OfflineClubRepository(InventoryDatabase.getDatabase(context).clubDao())
     }
 }

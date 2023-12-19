@@ -9,7 +9,7 @@ import retrofit2.http.Query
 
 
 private const val BASE_URL = "https://api-football-v1.p.rapidapi.com/v3/"
-private const val API_KEY = "e4b4d5da80msh1dc208234b8bcaap19675fjsn80876f57d3c4"
+private const val API_KEY = "e4b4d5da80msh1dc208234b8bcaap19675fjsn80876f57d3c4" // In a real app, this would be in a secrets file, not in the source code, so please don't abuse my key :)
 
 private val retrofit = Retrofit.Builder()
     .addConverterFactory(Json.asConverterFactory(contentType = "application/json".toMediaType()))

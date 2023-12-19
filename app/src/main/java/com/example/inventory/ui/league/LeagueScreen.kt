@@ -28,6 +28,7 @@ import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
+import org.setu.model.Club
 import org.setu.model.League
 
 object LeagueDestination : NavigationDestination {
@@ -45,6 +46,7 @@ fun LeagueScreen(
     viewModel: LeagueViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ){
     val uiState = viewModel.leagueUiState.collectAsState()
+    val uiClubState = viewModel.leagueClubUiState.collectAsState()
 
     Scaffold (
         topBar = {
@@ -71,6 +73,43 @@ fun LeagueScreen(
                     .fillMaxWidth()
                     .padding(top = 8.dp)
             )
+
+            // Clubs
+            if (uiClubState.value.clubs.isNotEmpty()) {
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        horizontalArrangement = Arrangement.Center // Added to center the Row content horizontally
+                    ) {
+                        Text(
+                            text = stringResource(R.string.clubs),
+                            style = MaterialTheme.typography.headlineMedium,
+                            modifier = Modifier.padding(start = 16.dp, top = 8.dp)
+                        )
+                    }
+                    Divider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp)
+                    )
+                    ClubList(clubs = uiClubState.value.clubs)
+                }
+            }else{
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    horizontalArrangement = Arrangement.Center // Added to center the Row content horizontally
+                ) {
+                    Text(
+                        text = stringResource(R.string.no_clubs),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(start = 16.dp, top = 8.dp)
+                    )
+                }
+            }
         }
     }
 
@@ -132,6 +171,44 @@ fun LeagueEditDeleteButtons(onDelete : () -> Unit, onEdit : () -> Unit){
             Icon(imageVector = Icons.Default.Delete, contentDescription = stringResource(id = R.string.delete))
         }
     }
+}
+
+@Composable
+fun ClubList(clubs: List<Club>) {
+    Column {
+        clubs.forEach { club ->
+            ClubRow(club)
+            Divider()
+        }
+    }
+}
+
+@Composable
+fun ClubRow(club: Club) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        AsyncImage(
+            model = club.crestUrl,
+            contentDescription = "Club logo",
+            modifier = Modifier
+                .size(50.dp)
+                .padding(end = 16.dp)
+        )
+        Column {
+            Text(
+                text = club.name,
+                style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
+                text = club.city,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+
 }
 
 

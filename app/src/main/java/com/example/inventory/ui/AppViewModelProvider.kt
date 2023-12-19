@@ -47,7 +47,7 @@ object AppViewModelProvider {
             HomeViewModel(inventoryApplication().container.itemsRepository)
         }
         initializer {
-            LeagueViewModel(this.createSavedStateHandle(), inventoryApplication().container.itemsRepository)
+            LeagueViewModel(this.createSavedStateHandle(), inventoryApplication().container.itemsRepository, inventoryApplication().container.clubsRepository)
         }
         initializer {
             LeagueEditViewModel(this.createSavedStateHandle(), inventoryApplication().container.itemsRepository)
