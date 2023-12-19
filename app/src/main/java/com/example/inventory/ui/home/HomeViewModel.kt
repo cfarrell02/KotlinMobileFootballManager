@@ -41,7 +41,7 @@ class HomeViewModel(private val leaguesRepository: LeagueRepository) : ViewModel
         viewModelScope.launch {
                 val searchResults = leaguesRepository.searchLeague(leagueName)
                 if (searchResults.isNotEmpty())
-                leaguesRepository.insertLeague(searchResults[0])
+                    leaguesRepository.insertLeague(searchResults[0])
         }
     }
 

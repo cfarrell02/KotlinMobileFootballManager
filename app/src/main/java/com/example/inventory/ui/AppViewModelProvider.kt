@@ -18,11 +18,13 @@ package com.example.inventory.ui
 
 import android.app.Application
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.inventory.InventoryApplication
 import com.example.inventory.ui.home.HomeViewModel
+import com.example.inventory.ui.league.LeagueEditViewModel
 import com.example.inventory.ui.league.LeagueViewModel
 
 //import com.example.inventory.ui.item.ItemDetailsViewModel
@@ -45,7 +47,10 @@ object AppViewModelProvider {
             HomeViewModel(inventoryApplication().container.itemsRepository)
         }
         initializer {
-            LeagueViewModel()
+            LeagueViewModel(this.createSavedStateHandle(), inventoryApplication().container.itemsRepository)
+        }
+        initializer {
+            LeagueEditViewModel(this.createSavedStateHandle(), inventoryApplication().container.itemsRepository)
         }
 //        // Initializer for ItemEntryViewModel
 //        initializer {

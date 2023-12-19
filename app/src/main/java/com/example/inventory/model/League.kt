@@ -14,12 +14,9 @@ class League (
     val uid: Int = 0
 ) {
 
-    init{
-        //Validation here
-        require(name.isNotBlank()){"Name cannot be blank"}
-        require(country.isNotBlank()){"Country cannot be blank"}
-        require(crestUrl.isNotBlank()){"CrestUrl cannot be blank"}
-    }
+    //Secondary constructor
+    constructor(): this("","","","","")
+
 
     override fun toString(): String {
         return "League: $name, $country"

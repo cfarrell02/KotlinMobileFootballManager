@@ -19,11 +19,15 @@ package com.example.inventory.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.inventory.ui.home.HomeDestination
 import com.example.inventory.ui.home.HomeScreen
 import com.example.inventory.ui.league.LeagueDestination
+import com.example.inventory.ui.league.LeagueEditDestination
+import com.example.inventory.ui.league.LeagueEditScreen
 import com.example.inventory.ui.league.LeagueScreen
 
 //import com.example.inventory.ui.item.ItemDetailsDestination
@@ -53,9 +57,29 @@ fun InventoryNavHost(
                 }
             )
         }
-        composable(route = LeagueDestination.routeWithArgs) {
-            LeagueScreen( navigateToItemEdit = { /*TODO*/},
-                navController = navController
+        composable(route = LeagueDestination.routeWithArgs,
+            arguments = listOf(
+                navArgument(LeagueDestination.leagueId) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+
+            LeagueScreen( navigateToItemEdit = {
+                navController.navigate("${LeagueEditDestination.route}/$it")
+                                               },
+                navigateBack = { navController.popBackStack() },
+                )
+        }
+        composable(route = LeagueEditDestination.routeWithArgs,
+                arguments = listOf(
+                navArgument(LeagueEditDestination.leagueId) {
+                    type = NavType.StringType
+                }
+            )
+            ) {
+            LeagueEditScreen( navigateBack = { navController.popBackStack() },
+                onNavigateUp = { navController.navigateUp() },
                 )
         }
 
