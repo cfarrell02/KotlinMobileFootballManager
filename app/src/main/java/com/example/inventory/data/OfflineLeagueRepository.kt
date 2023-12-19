@@ -21,6 +21,8 @@ class OfflineLeagueRepository (private val leagueDao: LeagueDao, private val lea
             League(
                 name = leagueResponse.league.name,
                 country = leagueResponse.country.name,
+                type = leagueResponse.league.type,
+                countryFlagUrl = leagueResponse.country.flag,
                 crestUrl = leagueResponse.league.logo,
                 uid = leagueResponse.league.id
             )

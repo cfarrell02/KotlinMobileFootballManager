@@ -1,12 +1,16 @@
 package org.setu.model
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.time.LocalDate
 import java.util.*
 import kotlin.collections.ArrayList
 
-@Entity(tableName = "clubs")
+@Entity(tableName = "clubs", foreignKeys = [ForeignKey(entity = League::class,
+    parentColumns = ["uid"],
+    childColumns = ["leagueId"],
+    onDelete = ForeignKey.CASCADE)])
 class Club (
     var name: String,
     var city: String,

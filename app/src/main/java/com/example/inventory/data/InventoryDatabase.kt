@@ -22,7 +22,7 @@ abstract class InventoryDatabase : RoomDatabase() {
         fun getDatabase(context: Context): InventoryDatabase {
             // if the Instance is not null, return it, otherwise create a new database instance.
             return Instance ?: synchronized(this) {
-                Room.databaseBuilder(context, InventoryDatabase::class.java, "leagues_database")
+                Room.databaseBuilder(context, InventoryDatabase::class.java, "leagueDatabase")
                     .build()
                     .also { Instance = it }
             }
