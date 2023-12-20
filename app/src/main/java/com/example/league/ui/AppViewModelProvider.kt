@@ -28,6 +28,7 @@ import com.example.league.ui.club.ClubEditViewModel
 import com.example.league.ui.club.ClubViewModel
 import com.example.league.ui.home.HomeAddModel
 import com.example.league.ui.home.HomeViewModel
+import com.example.league.ui.home.SearchViewModel
 import com.example.league.ui.league.LeagueEditViewModel
 import com.example.league.ui.league.LeagueViewModel
 
@@ -59,6 +60,7 @@ object AppViewModelProvider {
             ClubViewModel(this.createSavedStateHandle(), leagueApplication().container.clubsRepository)
         }
         initializer { ClubEditViewModel(this.createSavedStateHandle(), leagueApplication().container.clubsRepository) }
+        initializer { SearchViewModel(leagueApplication().container.leagueRepository, leagueApplication().container.clubsRepository) }
     }
 
     /**

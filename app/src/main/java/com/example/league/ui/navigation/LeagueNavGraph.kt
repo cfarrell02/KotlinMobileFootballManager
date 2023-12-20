@@ -33,6 +33,8 @@ import com.example.league.ui.home.HomeAddDestination
 import com.example.league.ui.home.HomeAddScreen
 import com.example.league.ui.home.HomeDestination
 import com.example.league.ui.home.HomeScreen
+import com.example.league.ui.home.SearchDestination
+import com.example.league.ui.home.SearchScreen
 import com.example.league.ui.league.LeagueDestination
 import com.example.league.ui.league.LeagueEditDestination
 import com.example.league.ui.league.LeagueEditScreen
@@ -65,7 +67,21 @@ fun LeagueNavHost(
                 },
                 navigateToLeagueAdd = {
                     navController.navigate(HomeAddDestination.route)
+                },
+                navigateToSearch = {
+                    navController.navigate(SearchDestination.route)
                 }
+            )
+        }
+        composable(route = SearchDestination.route) {
+            SearchScreen(
+                navigateToClub = {
+                    navController.navigate("${ClubDestination.route}/$it")
+                },
+                navigateToLeague = {
+                    navController.navigate("${LeagueDestination.route}/$it")
+                },
+                navigateBack = { navController.popBackStack() }
             )
         }
         composable(route = LeagueDestination.routeWithArgs,

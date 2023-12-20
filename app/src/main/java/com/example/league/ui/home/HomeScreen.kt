@@ -76,6 +76,7 @@
             navigateToLeagueUpdate: (Int) -> Unit,
             navigateToLeagueAdd: () -> Unit,
             modifier: Modifier = Modifier,
+            navigateToSearch: () -> Unit,
             viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
         ){
             val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
@@ -99,7 +100,7 @@
                     ) {
 
                         FloatingActionButton(
-                            onClick = { navigateToLeagueAdd() },
+                            onClick = { navigateToSearch() },
                             shape = MaterialTheme.shapes.medium,
                             modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
                         ) {
