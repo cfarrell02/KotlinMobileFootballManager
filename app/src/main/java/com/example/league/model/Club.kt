@@ -16,7 +16,7 @@ class Club (
     var venueCity : String,
     var venueCapacity : Int,
     var venueSurface : String,
-    var venuImageUrl: String,
+    var venueImageUrl: String,
     var leagueId : Int,
     @PrimaryKey(autoGenerate = true)
     val uid: Int
@@ -35,7 +35,7 @@ constructor() : this(
         venueCity = "",
         venueCapacity = 0,
         venueSurface = "",
-        venuImageUrl = "",
+        venueImageUrl = "",
         leagueId = 0,
         uid = 0
     )

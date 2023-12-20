@@ -7,18 +7,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import org.setu.model.Club
 import org.setu.model.League
-import org.setu.model.Player
 
 /**
  * Database class with a singleton Instance object.
  */
-@Database(entities = [League::class, Club::class, Player::class], version =1, exportSchema = false)
+@Database(entities = [League::class, Club::class], version =1, exportSchema = false)
 abstract class LeagueDatabase : RoomDatabase() {
     abstract fun leagueDao(): LeagueDao
 
     abstract fun clubDao(): ClubDao
 
-    abstract fun playerDao(): PlayerDao
 
     companion object {
         @Volatile

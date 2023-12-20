@@ -1,6 +1,5 @@
 package com.example.league.ui.club
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -37,7 +35,6 @@ import com.example.league.R
 import com.example.league.ui.AppViewModelProvider
 import com.example.league.ui.navigation.NavigationDestination
 import org.setu.model.Club
-import org.setu.model.Player
 
 object ClubDestination : NavigationDestination {
     override val route = "club/{clubId}"
@@ -48,9 +45,8 @@ object ClubDestination : NavigationDestination {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ClubScreen(navigateBack: () -> Unit, viewModel: ClubViewModel = viewModel(factory = AppViewModelProvider.Factory)) {
+fun ClubScreen(navigateBack: () -> Unit, navigateToEditClub: (Int) -> Unit, viewModel: ClubViewModel = viewModel(factory = AppViewModelProvider.Factory)) {
     val uiState = viewModel.clubUiState.collectAsState()
-    val playerState = viewModel.playerUiState.collectAsState()
 
     Scaffold(
         topBar = { LeagueTopAppBar(title = stringResource(R.string.club_details), canNavigateBack = true, navigateUp = navigateBack) }
@@ -59,10 +55,8 @@ fun ClubScreen(navigateBack: () -> Unit, viewModel: ClubViewModel = viewModel(fa
             var showDialog by remember { mutableStateOf(false) }
             ClubDetails(uiState.value.club, onDelete = {
                 showDialog = true
-            }, onEdit = { /*TODO*/ })
+            }, onEdit = { navigateToEditClub(uiState.value.club.uid) })
             Spacer(modifier = Modifier.height(16.dp))
-            PlayerList(players = playerState.value.player)
-
             ConfirmationDialog(showDialog, onConfirm = {
                 viewModel.deleteClub(uiState.value.club)
                 navigateBack()
@@ -146,16 +140,14 @@ fun ClubDetails(club: Club, onDelete: () -> Unit, onEdit: () -> Unit) {
 
 @Composable
 fun VenueDetails(club: Club){
-    var expanded: Boolean by remember { mutableStateOf(false) }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 8.dp)
-            .clickable { expanded = !expanded },
+            .padding(top = 8.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ){
-        if (expanded) {
             Column(
                 modifier = Modifier
                     .padding(16.dp),
@@ -163,59 +155,26 @@ fun VenueDetails(club: Club){
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 AsyncImage(
-                    model = club.venuImageUrl,
-                    contentDescription = stringResource(R.string.venue_image)
+                    model = club.venueImageUrl,
+                    contentDescription = stringResource(R.string.venue_image),
+                    modifier = Modifier
+                        .size(300.dp)
+                        .padding(bottom = 8.dp)
                 )
-                Text(text = "${club.venue} , ${club.venueAddress} , ${club.venueCity}")
+                Text(text = club.venue)
+                Text(text = club.venueAddress)
+                Text(text = club.venueCity)
                 Text(text = stringResource(R.string.capacity_people, club.venueCapacity))
                 Text(text = stringResource(
                     R.string.surface,
                     club.venueSurface.replaceFirstChar { it.uppercase() }))
             }
-        } else {
-            Text(text = stringResource(R.string.venue_details), style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(top = 8.dp, bottom = 8.dp), color = Color.Blue)
-        }
+
     }
 }
 
-@Composable
-fun PlayerList(players:List<Player>){
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp)
-    ) {
-        Text(text = stringResource(R.string.players), style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(start = 16.dp, top = 8.dp))
-        Divider()
-        players.forEach { player ->
-            PlayerItem(player = player)
-            Divider()
-        }
-    }
-}
 
-@Composable
-fun PlayerItem(player:Player){
-    Row {
-        AsyncImage(
-            model = player.pictureUrl,
-            contentDescription = stringResource(R.string.player_image),
-            modifier = Modifier
-                .size(50.dp)
-                .padding(start = 4.dp)
-        )
-        Column(
-            modifier = Modifier
-                .padding(start = 16.dp)
-                .align(Alignment.CenterVertically)
-        ) {
-            Text(text = player.name, style = MaterialTheme.typography.bodyMedium)
-            Text(text = player.position, style = MaterialTheme.typography.bodyMedium)
-        }
-    }
-}
+
 
 @Composable
 fun ConfirmationDialog(

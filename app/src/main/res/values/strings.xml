@@ -55,4 +55,13 @@
     <string name="confirm_delete">Do you really want to delete?</string>
     <string name="delete_this_league">Delete this league?</string>
     <string name="delete_this_club">Delete this club?</string>
+    <string name="club_name">Club Name</string>
+    <string name="club_country">Club Country</string>
+    <string name="club_founded_year">Club Founded Year</string>
+    <string name="club_venue">Club Venue</string>
+    <string name="club_venue_address">Club Venue Address</string>
+    <string name="club_venue_city">Club Venue City</string>
+    <string name="club_venue_capacity">Club Venue Capacity</string>
+    <string name="club_venue_surface">Club Venue Surface</string>
+    <string name="add_player">Add Player</string>
 </resources>

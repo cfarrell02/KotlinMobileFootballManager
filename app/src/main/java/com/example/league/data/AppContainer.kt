@@ -29,7 +29,6 @@ import retrofit2.Retrofit
 interface AppContainer {
     val leagueRepository: LeagueRepository
     val clubsRepository: ClubRepository
-    val playersRepository: PlayerRepository
 }
 
 /**
@@ -51,7 +50,5 @@ class AppDataContainer(private val context: Context) : AppContainer {
     override val clubsRepository: ClubRepository by lazy {
         ClubRepository(LeagueDatabase.getDatabase(context).clubDao(), retrofitService)
     }
-    override val playersRepository: PlayerRepository by lazy {
-        PlayerRepository(LeagueDatabase.getDatabase(context).playerDao(), retrofitService)
-    }
+
 }

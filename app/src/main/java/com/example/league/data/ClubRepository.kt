@@ -36,7 +36,7 @@ class ClubRepository (private val clubDao: ClubDao, private val leagueAPIService
                     venueCity = clubResponse.venue?.city ?: "",
                     venueCapacity = clubResponse.venue?.capacity ?: 0,
                     venueSurface = clubResponse.venue?.surface ?: "",
-                    venuImageUrl = clubResponse.venue?.image ?: "",
+                    venueImageUrl = clubResponse.venue?.image ?: "",
                     leagueId = 0,
                     uid = clubResponse.team?.id ?: 0
                 )

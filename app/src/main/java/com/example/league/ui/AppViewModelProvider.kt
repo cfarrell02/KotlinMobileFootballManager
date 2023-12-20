@@ -24,6 +24,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.league.LeagueApplication
 import com.example.league.ui.club.ClubAddModel
+import com.example.league.ui.club.ClubEditViewModel
 import com.example.league.ui.club.ClubViewModel
 import com.example.league.ui.home.HomeAddModel
 import com.example.league.ui.home.HomeViewModel
@@ -55,8 +56,9 @@ object AppViewModelProvider {
             ClubAddModel(this.createSavedStateHandle(), leagueApplication().container.clubsRepository)
         }
         initializer {
-            ClubViewModel(this.createSavedStateHandle(), leagueApplication().container.clubsRepository, leagueApplication().container.playersRepository)
+            ClubViewModel(this.createSavedStateHandle(), leagueApplication().container.clubsRepository)
         }
+        initializer { ClubEditViewModel(this.createSavedStateHandle(), leagueApplication().container.clubsRepository) }
     }
 
     /**

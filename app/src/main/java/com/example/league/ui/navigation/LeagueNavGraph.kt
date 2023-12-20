@@ -26,6 +26,8 @@ import androidx.navigation.navArgument
 import com.example.league.ui.club.ClubAddDestination
 import com.example.league.ui.club.ClubAddScreen
 import com.example.league.ui.club.ClubDestination
+import com.example.league.ui.club.ClubEditDestination
+import com.example.league.ui.club.ClubEditScreen
 import com.example.league.ui.club.ClubScreen
 import com.example.league.ui.home.HomeAddDestination
 import com.example.league.ui.home.HomeAddScreen
@@ -122,8 +124,21 @@ fun LeagueNavHost(
             )
         ) {
             ClubScreen(
-                navigateBack = { navController.popBackStack() }
+                navigateBack = { navController.popBackStack() },
+                navigateToEditClub = {
+                    navController.navigate("${ClubEditDestination.route}/$it")
+                }
             )
+        }
+        composable(route = ClubEditDestination.routeWithArgs,
+            arguments = listOf(
+                navArgument(ClubEditDestination.clubId) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            ClubEditScreen (
+                navigateBack = { navController.popBackStack() })
         }
 
     }

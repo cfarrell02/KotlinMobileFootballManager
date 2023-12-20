@@ -20,10 +20,10 @@ class LeagueEditViewModel (
     var leagueUiState by mutableStateOf(LeagueUiState())
         private set
 
-    private val itemId: String = checkNotNull(savedStateHandle[LeagueDestination.leagueId])
+    private val leagueId: String = checkNotNull(savedStateHandle[LeagueDestination.leagueId])
     init {
         viewModelScope.launch {
-            leagueUiState = leaguesRepository.getLeagueStream(itemId.toInt())
+            leagueUiState = leaguesRepository.getLeagueStream(leagueId.toInt())
                 .filterNotNull()
                 .first()
                  .let { LeagueUiState(it) }
