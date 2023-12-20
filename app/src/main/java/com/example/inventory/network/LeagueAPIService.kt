@@ -20,7 +20,13 @@ interface LeagueAPIService {
     @GET("leagues")
     suspend fun getLeagues(
         @Header("X-Rapidapi-Key") apiKey: String = API_KEY,
-        @Query("name") leagueName: String
+        @Query("search") leagueName: String
     ): LeagueApiResponse
+
+    @GET("teams")
+    suspend fun getTeams(
+        @Header("X-Rapidapi-Key") apiKey: String = API_KEY,
+        @Query("search") teamName: String
+    ): ClubAPIResponse
 
 }

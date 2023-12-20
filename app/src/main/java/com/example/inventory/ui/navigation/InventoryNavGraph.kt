@@ -23,6 +23,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.inventory.ui.club.ClubAddDestination
+import com.example.inventory.ui.club.ClubAddScreen
+import com.example.inventory.ui.club.ClubDestination
+import com.example.inventory.ui.club.ClubScreen
 import com.example.inventory.ui.home.HomeAddDestination
 import com.example.inventory.ui.home.HomeAddScreen
 import com.example.inventory.ui.home.HomeDestination
@@ -74,6 +78,12 @@ fun InventoryNavHost(
                 navController.navigate("${LeagueEditDestination.route}/$it")
                                                },
                 navigateBack = { navController.popBackStack() },
+                navigateToClubAdd = {
+                    navController.navigate("${ClubAddDestination.route}/$it")
+                },
+                navigateToClubDetails = {
+                    navController.navigate("${ClubDestination.route}/$it")
+                }
                 )
         }
         composable(route = LeagueEditDestination.routeWithArgs,
@@ -90,6 +100,28 @@ fun InventoryNavHost(
         composable(route = HomeAddDestination.routeWithArgs
         ) {
             HomeAddScreen(
+                navigateBack = { navController.popBackStack() }
+            )
+        }
+        composable(route = ClubAddDestination.routeWithArgs,
+            arguments = listOf(
+                navArgument(ClubAddDestination.leagueId) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            ClubAddScreen(
+                navigateBack = { navController.popBackStack() }
+            )
+        }
+        composable(route = ClubDestination.routeWithArgs,
+            arguments = listOf(
+                navArgument(ClubDestination.clubId) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            ClubScreen(
                 navigateBack = { navController.popBackStack() }
             )
         }

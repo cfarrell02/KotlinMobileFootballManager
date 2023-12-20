@@ -6,29 +6,38 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "clubs")
 class Club (
     var name: String,
-    var city: String,
-    var stadium: String,
-    var founded: String,
+    var code: String,
+    var country: String,
+    var national: Boolean,
+    var founded: Int,
     var crestUrl: String,
-    val leagueId : Int,
+    var venue: String,
+    var venueAddress : String,
+    var venueCity : String,
+    var venueCapacity : Int,
+    var venueSurface : String,
+    var venuImageUrl: String,
+    var leagueId : Int,
     @PrimaryKey(autoGenerate = true)
     val uid: Int
 
 ) {
-
-
-
-    init{
-        //Validation here
-        require(name.isNotBlank()){"Name cannot be blank"}
-        require(city.isNotBlank()){"City cannot be blank"}
-        require(stadium.isNotBlank()){"Stadium cannot be blank"}
-    }
-
-
-
-    override fun toString(): String {
-        return "Club: $name, $city, $stadium"
-    }
+//Secondary constructor
+constructor() : this(
+        name = "",
+        code = "",
+        country = "",
+        national = false,
+        founded = 0,
+        crestUrl = "",
+        venue = "",
+        venueAddress = "",
+        venueCity = "",
+        venueCapacity = 0,
+        venueSurface = "",
+        venuImageUrl = "",
+        leagueId = 0,
+        uid = 0
+    )
 
 }

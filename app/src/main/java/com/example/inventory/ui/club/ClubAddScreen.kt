@@ -1,4 +1,6 @@
-package com.example.inventory.ui.home
+package com.example.inventory.ui.club
+
+
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -31,31 +33,32 @@ import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
 import com.example.inventory.ui.AppViewModelProvider
 import com.example.inventory.ui.navigation.NavigationDestination
-import org.setu.model.League
+import org.setu.model.Club
 
-object HomeAddDestination : NavigationDestination {
-    override val route = "league_add"
-    override val titleRes = R.string.app_name
-    val routeWithArgs = route
+object ClubAddDestination : NavigationDestination {
+    override val route = "club_add"
+    override val titleRes = R.string.clubs
+    val leagueId = "leagueId"
+    val routeWithArgs = "$route/{leagueId}"
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeAddScreen(
+fun ClubAddScreen(
     navigateBack: () -> Unit,
-    viewModel: HomeAddModel = viewModel(factory = AppViewModelProvider.Factory),
+    viewModel: ClubAddModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
     var searchQuery by remember { mutableStateOf("") }
     val searchResults by viewModel.searchResults.collectAsState()
 
     Scaffold(
-        topBar = { InventoryTopAppBar(title = "Add League", canNavigateBack = true) }
+        topBar = { InventoryTopAppBar(title = "Add Club", canNavigateBack = true) }
     ) {
         Column(modifier = Modifier.padding(it)) {
             Column (modifier = Modifier.padding(16.dp)) {
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    label = { Text("Search for a league") },
+                    label = { Text("Search for a club") },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp)
@@ -63,11 +66,11 @@ fun HomeAddScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 if (searchResults.isNotEmpty()) {
                     LazyColumn {
-                        items(searchResults) { league ->
-                            LeagueItem(
-                                league = league,
+                        items(searchResults) { club ->
+                            ClubItem(
+                                club = club,
                                 onAddClick = {
-                                    viewModel.addLeague(league)
+                                    viewModel.insertClub(club)
                                     navigateBack()
                                 }
                             )
@@ -86,12 +89,12 @@ fun HomeAddScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Button(
-                        onClick = { viewModel.searchLeague(searchQuery) },
+                        onClick = { viewModel.searchClub(searchQuery) },
                         modifier = Modifier
                             .weight(1f)
                             .padding(end = 4.dp)
                     ) {
-                        Text(stringResource(id = R.string.search_league))
+                        Text(stringResource(id = R.string.search_club))
                     }
                     Button(
                         onClick = navigateBack,
@@ -108,7 +111,7 @@ fun HomeAddScreen(
 }
 
 @Composable
-fun LeagueItem(league: League, onAddClick: () -> Unit) {
+fun ClubItem(club: Club, onAddClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -125,11 +128,11 @@ fun LeagueItem(league: League, onAddClick: () -> Unit) {
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Text(
-                    text = league.name,
+                    text = club.name,
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Text(
-                    text = league.country,
+                    text = club.country,
                     style = MaterialTheme.typography.bodyMedium
                 )
             }

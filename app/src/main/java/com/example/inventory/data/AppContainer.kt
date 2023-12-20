@@ -48,6 +48,6 @@ class AppDataContainer(private val context: Context) : AppContainer {
         OfflineLeagueRepository(InventoryDatabase.getDatabase(context).leagueDao(), retrofitService)
     }
     override val clubsRepository: OfflineClubRepository by lazy {
-        OfflineClubRepository(InventoryDatabase.getDatabase(context).clubDao())
+        OfflineClubRepository(InventoryDatabase.getDatabase(context).clubDao(), retrofitService)
     }
 }

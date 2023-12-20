@@ -23,6 +23,8 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.inventory.InventoryApplication
+import com.example.inventory.ui.club.ClubAddModel
+import com.example.inventory.ui.club.ClubViewModel
 import com.example.inventory.ui.home.HomeAddModel
 import com.example.inventory.ui.home.HomeViewModel
 import com.example.inventory.ui.league.LeagueEditViewModel
@@ -55,6 +57,12 @@ object AppViewModelProvider {
         }
         initializer {
             HomeAddModel(inventoryApplication().container.itemsRepository)
+        }
+        initializer {
+            ClubAddModel(this.createSavedStateHandle(), inventoryApplication().container.clubsRepository)
+        }
+        initializer {
+            ClubViewModel(this.createSavedStateHandle(), inventoryApplication().container.clubsRepository)
         }
     }
 

@@ -1,5 +1,6 @@
 package com.example.inventory.ui.league
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,11 +8,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -20,10 +23,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.example.inventory.InventoryTopAppBar
 import com.example.inventory.R
 import com.example.inventory.ui.AppViewModelProvider
@@ -42,7 +48,9 @@ object LeagueDestination : NavigationDestination {
 @Composable
 fun LeagueScreen(
     navigateToItemEdit: (Int) -> Unit,
+    navigateToClubAdd: (Int) -> Unit,
     navigateBack : () -> Unit,
+    navigateToClubDetails : (Int) -> Unit,
     viewModel: LeagueViewModel = viewModel(factory = AppViewModelProvider.Factory),
 ){
     val uiState = viewModel.leagueUiState.collectAsState()
@@ -51,6 +59,18 @@ fun LeagueScreen(
     Scaffold (
         topBar = {
             InventoryTopAppBar(title = stringResource(R.string.league_details), canNavigateBack =true, navigateUp = navigateBack )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { navigateToClubAdd(uiState.value.league.uid) },
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.add_club)
+                )
+            }
         }
     ) {
         innerPadding ->
@@ -67,12 +87,6 @@ fun LeagueScreen(
                 onEdit = { navigateToItemEdit(uiState.value.league.uid) }
             )
 
-            // Divider
-            Divider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp)
-            )
 
             // Clubs
             if (uiClubState.value.clubs.isNotEmpty()) {
@@ -94,7 +108,7 @@ fun LeagueScreen(
                             .fillMaxWidth()
                             .padding(top = 8.dp)
                     )
-                    ClubList(clubs = uiClubState.value.clubs)
+                    ClubList(clubs = uiClubState.value.clubs, onClubPress = navigateToClubDetails)
                 }
             }else{
                 Row(
@@ -174,37 +188,46 @@ fun LeagueEditDeleteButtons(onDelete : () -> Unit, onEdit : () -> Unit){
 }
 
 @Composable
-fun ClubList(clubs: List<Club>) {
+fun ClubList(clubs: List<Club>, onClubPress : (Int) -> Unit = {}) {
     Column {
         clubs.forEach { club ->
-            ClubRow(club)
+            ClubRow(club, onClubPress)
             Divider()
         }
     }
 }
 
 @Composable
-fun ClubRow(club: Club) {
-    Row(
+fun ClubRow(club: Club, onPress : (Int) -> Unit) {
+    Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .clickable { onPress(club.uid) }
     ) {
-        AsyncImage(
-            model = club.crestUrl,
-            contentDescription = "Club logo",
+        Row(
             modifier = Modifier
-                .size(50.dp)
-                .padding(end = 16.dp)
-        )
-        Column {
-            Text(
-                text = club.name,
-                style = MaterialTheme.typography.bodyMedium
-            )
-            Text(
-                text = club.city,
-                style = MaterialTheme.typography.bodyMedium
+                .padding(start = 80.dp, end = 80.dp, top = 16.dp, bottom = 16.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween // Aligns content at ends
+        ) {
+
+            Column {
+                Text(
+                    text = club.name,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Text(
+                    text = club.country,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+            }
+
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(club.crestUrl)
+                    .build(),
+                contentDescription = stringResource(R.string.league_logo_alt, club.name),
             )
         }
     }

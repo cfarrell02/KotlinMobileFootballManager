@@ -17,15 +17,18 @@ class OfflineLeagueRepository (private val leagueDao: LeagueDao, private val lea
 
     override suspend fun searchLeague(query: String): List<League>{
         val leagues = leagueAPIService.getLeagues(leagueName = query).response
-        return leagues.map { leagueResponse ->
-            League(
-                name = leagueResponse.league.name,
-                country = leagueResponse.country.name,
-                type = leagueResponse.league.type,
-                countryFlagUrl = leagueResponse.country.flag,
-                crestUrl = leagueResponse.league.logo,
-                uid = leagueResponse.league.id
-            )
+        if (leagues != null) {
+            return leagues.map { leagueResponse ->
+                League(
+                    name = leagueResponse.league?.name ?: "",
+                    country = leagueResponse.country?.name ?: "",
+                    type = leagueResponse.league?.type ?: "",
+                    countryFlagUrl = leagueResponse.country?.flag?: "",
+                    crestUrl = leagueResponse.league?.logo ?: "",
+                    uid = leagueResponse.league?.id ?: 0
+                )
+            }
         }
+        return emptyList()
     }
 }
