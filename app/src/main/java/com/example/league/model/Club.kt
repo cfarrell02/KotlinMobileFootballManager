@@ -2,6 +2,7 @@ package org.setu.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.league.model.Item
 
 @Entity(tableName = "clubs")
 class Club (
@@ -21,7 +22,7 @@ class Club (
     @PrimaryKey(autoGenerate = true)
     val uid: Int
 
-) {
+) : Item(){
 //Secondary constructor
 constructor() : this(
         name = "",
