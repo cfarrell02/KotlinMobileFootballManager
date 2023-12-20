@@ -133,7 +133,6 @@ fun ClubDetails(club: Club, onDelete: () -> Unit, onEdit: () -> Unit) {
         ClubEditDeleteButtons(onDelete = onDelete , onEdit = onEdit)
         Divider()
         VenueDetails(club = club)
-        Divider()
 
     }
 }
@@ -154,6 +153,7 @@ fun VenueDetails(club: Club){
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                Text(text = stringResource(R.string.venue), style = MaterialTheme.typography.titleLarge)
                 AsyncImage(
                     model = club.venueImageUrl,
                     contentDescription = stringResource(R.string.venue_image),
