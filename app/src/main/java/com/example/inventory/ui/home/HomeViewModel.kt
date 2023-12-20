@@ -37,13 +37,6 @@ class HomeViewModel(private val leaguesRepository: LeagueRepository) : ViewModel
         }
     }
 
-    fun searchLeague(leagueName: String) {
-        viewModelScope.launch {
-                val searchResults = leaguesRepository.searchLeague(leagueName)
-                if (searchResults.isNotEmpty())
-                    leaguesRepository.insertLeague(searchResults[0])
-        }
-    }
 
 
     companion object {

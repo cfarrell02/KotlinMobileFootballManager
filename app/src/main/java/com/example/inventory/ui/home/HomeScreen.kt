@@ -27,15 +27,12 @@
         import androidx.compose.foundation.lazy.items
         import androidx.compose.material.icons.Icons
         import androidx.compose.material.icons.filled.Add
-        import androidx.compose.material3.AlertDialog
-        import androidx.compose.material3.Button
         import androidx.compose.material3.Card
         import androidx.compose.material3.CardDefaults
         import androidx.compose.material3.ExperimentalMaterial3Api
         import androidx.compose.material3.FloatingActionButton
         import androidx.compose.material3.Icon
         import androidx.compose.material3.MaterialTheme
-        import androidx.compose.material3.OutlinedTextField
         import androidx.compose.material3.Scaffold
         import androidx.compose.material3.Text
         import androidx.compose.material3.TopAppBarDefaults
@@ -76,6 +73,7 @@
         @Composable
         fun HomeScreen(
             navigateToLeagueUpdate: (Int) -> Unit,
+            navigateToLeagueAdd: () -> Unit,
             modifier: Modifier = Modifier,
             viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
         ){
@@ -94,7 +92,7 @@
                 },
                 floatingActionButton = {
                     FloatingActionButton(
-                        onClick = { isDialogOpen = true },
+                        onClick = { navigateToLeagueAdd() },
                         shape = MaterialTheme.shapes.medium,
                         modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
                     ) {
@@ -111,16 +109,7 @@
                     onItemClick = navigateToLeagueUpdate,
                     modifier = modifier.padding(innerPadding)
                 )
-                if (isDialogOpen) {
-                    AddLeagueDialog(
-                        onLeagueAdded = { name ->
-                            viewModel.searchLeague(name)
-                            isDialogOpen = false
-                        },
-                        onDismiss = { isDialogOpen = false },
 
-                    )
-                }
 
             }
         }
@@ -203,43 +192,5 @@
             }
         }
 
-        @Composable
-        fun AddLeagueDialog(
-            onLeagueAdded: (String) -> Unit,
-            onDismiss: () -> Unit
-        ) {
-
-            var searchQuery by remember { mutableStateOf("") }
-
-            AlertDialog(
-                onDismissRequest = onDismiss,
-                title = { Text(text = "Add League") },
-                text = {
-                    Column {
-                        OutlinedTextField(
-                            value = searchQuery,
-                            onValueChange = { searchQuery = it },
-                            label = { Text("League Name") }
-                        )
-                    }
-                },
-                confirmButton = {
-                    Button(
-                        onClick = {
-                            //val newLeague = League(name = name, country = country, crestUrl = crestUrl)
-                            onLeagueAdded(searchQuery)
-                            onDismiss()
-                        }
-                    ) {
-                        Text(stringResource(id = R.string.add_league))
-                    }
-                },
-                dismissButton = {
-                    Button(onClick = onDismiss) {
-                        Text(stringResource(id = R.string.cancel_action))
-                    }
-                }
-            )
-        }
 
 

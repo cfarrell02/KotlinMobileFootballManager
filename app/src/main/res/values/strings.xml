@@ -42,4 +42,5 @@
     <string name="update_league">Update League</string>
     <string name="clubs">Clubs</string>
     <string name="no_clubs">No clubs in this league, hit \'+\' to add some!</string>
+    <string name="search_league">Search For League</string>
 </resources>

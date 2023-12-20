@@ -23,6 +23,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.inventory.ui.home.HomeAddDestination
+import com.example.inventory.ui.home.HomeAddScreen
 import com.example.inventory.ui.home.HomeDestination
 import com.example.inventory.ui.home.HomeScreen
 import com.example.inventory.ui.league.LeagueDestination
@@ -54,6 +56,9 @@ fun InventoryNavHost(
             HomeScreen(
                 navigateToLeagueUpdate = {
                     navController.navigate("${LeagueDestination.route}/$it")
+                },
+                navigateToLeagueAdd = {
+                    navController.navigate(HomeAddDestination.route)
                 }
             )
         }
@@ -81,6 +86,12 @@ fun InventoryNavHost(
             LeagueEditScreen( navigateBack = { navController.popBackStack() },
                 onNavigateUp = { navController.navigateUp() },
                 )
+        }
+        composable(route = HomeAddDestination.routeWithArgs
+        ) {
+            HomeAddScreen(
+                navigateBack = { navController.popBackStack() }
+            )
         }
 
     }
