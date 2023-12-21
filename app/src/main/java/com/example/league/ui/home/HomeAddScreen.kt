@@ -45,7 +45,8 @@ fun HomeAddScreen(
     viewModel: HomeAddModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
     var searchQuery by remember { mutableStateOf("") }
-    val searchResults by viewModel.searchResults.collectAsState()
+    val uiState by viewModel.searchResults.collectAsState()
+    val searchResults = uiState.leagueList
 
     Scaffold(
         topBar = { LeagueTopAppBar(title = "Add League", canNavigateBack = true) }
@@ -61,24 +62,29 @@ fun HomeAddScreen(
                         .padding(vertical = 8.dp)
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+                if (uiState.isLoaded) {
                 if (searchResults.isNotEmpty()) {
-                    LazyColumn {
-                        items(searchResults) { league ->
-                            LeagueItem(
-                                league = league,
-                                onAddClick = {
-                                    viewModel.addLeague(league)
-                                    navigateBack()
-                                }
-                            )
+
+                        LazyColumn {
+                            items(searchResults) { league ->
+                                LeagueItem(
+                                    league = league,
+                                    onAddClick = {
+                                        viewModel.addLeague(league)
+                                        navigateBack()
+                                    }
+                                )
+                            }
                         }
-                    }
                 } else {
                     Text(
                         text = "No search results found.",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(top = 8.dp)
                     )
+                }
+                }else{
+                    Loading()
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
@@ -106,6 +112,7 @@ fun HomeAddScreen(
         }
     }
 }
+
 
 @Composable
 fun LeagueItem(league: League, onAddClick: () -> Unit) {

@@ -1,7 +1,9 @@
 package com.example.league.ui.home
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -84,8 +86,20 @@ fun SearchResults (searchResults: List<Item>, navigateToClub : (Int) -> Unit, na
 @Composable
 fun SearchItem (item : Item, navigateToClub : (Int) -> Unit, navigateToLeague : (Int) -> Unit) {
     if (item is Club) {
-        Text(text = item.name)
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clickable { navigateToClub(item.uid) }) {
+            Text(text = item.name)
+            Text(text = item.country)
+        }
     } else if (item is League) {
-        Text(text = item.name)
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .clickable { navigateToLeague(item.uid) }) {
+            Text(text = item.name)
+            Text(text = item.country)
+        }
     }
 }
