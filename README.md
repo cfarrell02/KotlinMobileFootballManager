@@ -9,23 +9,21 @@ This is a continuation of the league app from CA 1. It has now been brought to m
 Please check out the App in the releases section. For more details about the workings of this app, please read on.
 
 ### Football API
+This app uses RapidAPI's football-api to retrieve information on football leagues and clubs.
 
-TODO: Talk about backend API.
+- '/leagues' this takes in a query param 'search' allowing for searching and retrieval of any league in their database
+- '/teams' this takes in a query param 'search' allowing for searching and retrieval of any team in the database
 
 ### Room Database
 
-TODO: Talk about local room SQLite DB.
-
-### Navigation
-
-TODO: Talk about navigation system.
+Room is used for local database storage. This allows for dynamic storage of leagues and databases and no issues with scaling.
 
 ### Drill Down CRUD experience
-
-TODO: Talk about UI and how performing CRUD operations on items is more seamless than ever.
-
+UI allows for intuitive drill down experience. The user can add leagues, then in that league add a club. This allows for seamless management of leagues and clubs.
 
 ## References
 
 The labs provided a lot of help while working on this, however some third party help was needed. They are listed below:
 - Integration with phone gallery app - https://proandroiddev.com/jetpack-compose-new-photo-picker-b280950ba934
+
+See the rubric PDF for a more detailed summary of this project.
