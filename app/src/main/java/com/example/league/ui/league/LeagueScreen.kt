@@ -37,6 +37,7 @@ import coil.request.ImageRequest
 import com.example.league.LeagueTopAppBar
 import com.example.league.R
 import com.example.league.ui.AppViewModelProvider
+import com.example.league.ui.home.Loading
 import com.example.league.ui.navigation.NavigationDestination
 import org.setu.model.Club
 import org.setu.model.League
@@ -101,10 +102,35 @@ fun LeagueScreen(
                 onDismiss = { showDialog = false }
             )
 
-
-            // Clubs
-            if (uiClubState.value.clubs.isNotEmpty()) {
-                Column {
+            if (!uiClubState.value.isLoaded) {
+                Loading()
+            } else {
+                // Clubs
+                if (uiClubState.value.clubs.isNotEmpty()) {
+                    Column {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp),
+                            horizontalArrangement = Arrangement.Center // Added to center the Row content horizontally
+                        ) {
+                            Text(
+                                text = stringResource(R.string.clubs),
+                                style = MaterialTheme.typography.headlineMedium,
+                                modifier = Modifier.padding(start = 16.dp, top = 8.dp)
+                            )
+                        }
+                        Divider(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp)
+                        )
+                        ClubList(
+                            clubs = uiClubState.value.clubs,
+                            onClubPress = navigateToClubDetails
+                        )
+                    }
+                } else {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -112,30 +138,11 @@ fun LeagueScreen(
                         horizontalArrangement = Arrangement.Center // Added to center the Row content horizontally
                     ) {
                         Text(
-                            text = stringResource(R.string.clubs),
-                            style = MaterialTheme.typography.headlineMedium,
+                            text = stringResource(R.string.no_clubs),
+                            style = MaterialTheme.typography.bodyMedium,
                             modifier = Modifier.padding(start = 16.dp, top = 8.dp)
                         )
                     }
-                    Divider(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp)
-                    )
-                    ClubList(clubs = uiClubState.value.clubs, onClubPress = navigateToClubDetails)
-                }
-            }else{
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                    horizontalArrangement = Arrangement.Center // Added to center the Row content horizontally
-                ) {
-                    Text(
-                        text = stringResource(R.string.no_clubs),
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(start = 16.dp, top = 8.dp)
-                    )
                 }
             }
         }

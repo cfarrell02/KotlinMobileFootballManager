@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -45,10 +47,12 @@ fun HomeAddScreen(
     viewModel: HomeAddModel = viewModel(factory = AppViewModelProvider.Factory),
 ) {
     var searchQuery by remember { mutableStateOf("") }
-    val searchResults by viewModel.searchResults.collectAsState()
+    val uiState by viewModel.searchResults.collectAsState()
+    val searchResults = uiState.leagueList
+    val context = LocalContext.current
 
     Scaffold(
-        topBar = { LeagueTopAppBar(title = "Add League", canNavigateBack = true) }
+        topBar = { LeagueTopAppBar(title = "Add League", canNavigateBack = true, navigateUp = navigateBack) }
     ) {
         Column(modifier = Modifier.padding(it)) {
             Column (modifier = Modifier.padding(16.dp)) {
@@ -58,27 +62,36 @@ fun HomeAddScreen(
                     label = { Text("Search for a league") },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                        .padding(vertical = 8.dp),
+                    singleLine = true,
+                    keyboardActions = KeyboardActions(onDone = { viewModel.searchLeague(searchQuery)
+                    hideKeyboard(context = context)
+                    })
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+                if (uiState.isLoaded) {
                 if (searchResults.isNotEmpty()) {
-                    LazyColumn {
-                        items(searchResults) { league ->
-                            LeagueItem(
-                                league = league,
-                                onAddClick = {
-                                    viewModel.addLeague(league)
-                                    navigateBack()
-                                }
-                            )
+
+                        LazyColumn {
+                            items(searchResults) { league ->
+                                LeagueItem(
+                                    league = league,
+                                    onAddClick = {
+                                        viewModel.addLeague(league)
+                                        navigateBack()
+                                    }
+                                )
+                            }
                         }
-                    }
                 } else {
                     Text(
                         text = "No search results found.",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(top = 8.dp)
                     )
+                }
+                }else{
+                    Loading()
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
@@ -106,6 +119,7 @@ fun HomeAddScreen(
         }
     }
 }
+
 
 @Composable
 fun LeagueItem(league: League, onAddClick: () -> Unit) {

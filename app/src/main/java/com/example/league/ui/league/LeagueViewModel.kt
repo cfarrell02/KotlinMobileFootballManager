@@ -28,7 +28,7 @@ class LeagueViewModel(
         leaguesRepository.getLeagueStream(leagueId.toInt())
             .filterNotNull()
             .map {
-                LeagueUiState(it)
+                LeagueUiState(it, true)
             }.stateIn(
                 scope = viewModelScope,
                 started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
@@ -37,7 +37,7 @@ class LeagueViewModel(
     val leagueClubUiState: StateFlow<LeagueClubUiState> =
         clubsRepository.getClubsByLeagueId(leagueId.toInt())
             .map {
-                LeagueClubUiState(it)
+                LeagueClubUiState(it, true)
             }.stateIn(
                 scope = viewModelScope,
                 started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
@@ -59,5 +59,5 @@ class LeagueViewModel(
 }
 
 
-data class LeagueUiState(val league: League = League())
-data class LeagueClubUiState(val clubs : List<Club> = emptyList())
+data class LeagueUiState(val league: League = League(), val isLoaded: Boolean = false)
+data class LeagueClubUiState(val clubs : List<Club> = emptyList(), val isLoaded: Boolean = false)

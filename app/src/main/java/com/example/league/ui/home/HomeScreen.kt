@@ -24,13 +24,17 @@
         import androidx.compose.foundation.layout.fillMaxSize
         import androidx.compose.foundation.layout.fillMaxWidth
         import androidx.compose.foundation.layout.padding
+        import androidx.compose.foundation.layout.size
         import androidx.compose.foundation.lazy.LazyColumn
         import androidx.compose.foundation.lazy.items
         import androidx.compose.material.icons.Icons
         import androidx.compose.material.icons.filled.Add
+        import androidx.compose.material.icons.filled.Search
         import androidx.compose.material3.Card
         import androidx.compose.material3.CardDefaults
+        import androidx.compose.material3.CircularProgressIndicator
         import androidx.compose.material3.ExperimentalMaterial3Api
+        import androidx.compose.material3.FabPosition
         import androidx.compose.material3.FloatingActionButton
         import androidx.compose.material3.Icon
         import androidx.compose.material3.MaterialTheme
@@ -52,10 +56,10 @@
         import coil.compose.AsyncImage
         import coil.request.ImageRequest
         import com.example.league.LeagueTopAppBar
+        import com.example.league.R
         import com.example.league.ui.AppViewModelProvider
         import com.example.league.ui.navigation.NavigationDestination
         import org.setu.model.League
-        import com.example.league.R
 
 
         object HomeDestination : NavigationDestination {
@@ -74,10 +78,13 @@
             navigateToLeagueUpdate: (Int) -> Unit,
             navigateToLeagueAdd: () -> Unit,
             modifier: Modifier = Modifier,
+            navigateToSearch: () -> Unit,
             viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory)
         ){
             val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
             val homeUiState by viewModel.homeUiState.collectAsState()
+
+            
 
             Scaffold(
                 modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -89,26 +96,61 @@
                     )
                 },
                 floatingActionButton = {
-                    FloatingActionButton(
-                        onClick = { navigateToLeagueAdd() },
-                        shape = MaterialTheme.shapes.medium,
-                        modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
+                    Row (
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(dimensionResource(id = R.dimen.padding_small)),
+                        horizontalArrangement = Arrangement.SpaceBetween // Aligns content at ends
                     ) {
-                        Icon(
-                            imageVector = Icons.Default.Add,
-                            contentDescription = stringResource(R.string.add_league)
-                        )
+
+                        FloatingActionButton(
+                            onClick = { navigateToSearch() },
+                            shape = MaterialTheme.shapes.medium,
+                            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Search,
+                                contentDescription = stringResource(R.string.search_league)
+                            )
+                        }
+
+                        FloatingActionButton(
+                            onClick = { navigateToLeagueAdd() },
+                            shape = MaterialTheme.shapes.medium,
+                            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large))
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Add,
+                                contentDescription = stringResource(R.string.add_league)
+                            )
+                        }
                     }
+
                 },
+                floatingActionButtonPosition = FabPosition.Center
             ) { innerPadding ->
+                if (homeUiState.isLoaded) {
+                    HomeBody(
+                        leagueList = homeUiState.leagueList,
+                        onItemClick = navigateToLeagueUpdate,
+                        modifier = modifier.padding(innerPadding)
+                    )
+                } else {
+                   Loading()
+                }
 
-                HomeBody(
-                    leagueList = homeUiState.leagueList,
-                    onItemClick = navigateToLeagueUpdate,
-                    modifier = modifier.padding(innerPadding)
-                )
 
+            }
+        }
 
+        @Composable
+        fun Loading(){
+            Column( verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+
+            ) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally).size(100.dp),
+                    strokeWidth = 10.dp)
             }
         }
 
@@ -150,7 +192,6 @@
                 items(leagueList) { league ->
                     LeagueItem(
                         league = league,
-                        onItemClick = { onItemClick(league.uid) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(dimensionResource(id = R.dimen.padding_small))
@@ -163,7 +204,6 @@
         @Composable
         private fun LeagueItem(
             league: League,
-            onItemClick: (Int) -> Unit,
             modifier: Modifier = Modifier
         ) {
             Card(

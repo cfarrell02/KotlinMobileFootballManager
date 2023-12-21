@@ -16,6 +16,9 @@ class OfflineLeagueRepository (private val leagueDao: LeagueDao, private val lea
     override suspend fun updateLeague(league: League) = leagueDao.update(league)
 
     override suspend fun searchLeague(query: String): List<League>{
+        if (query.length < 3) {
+            return emptyList()
+        }
         val leagues = leagueAPIService.getLeagues(leagueName = query).response
         if (leagues != null) {
             return leagues.map { leagueResponse ->

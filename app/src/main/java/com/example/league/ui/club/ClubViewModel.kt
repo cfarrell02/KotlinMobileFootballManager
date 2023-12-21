@@ -20,7 +20,7 @@ class ClubViewModel (savedStateHandle: SavedStateHandle,
 
             val clubUiState : StateFlow<ClubUiState> = clubRepository.getClubStream(clubId.toInt())
                 .map {
-                    ClubUiState(it ?: Club())
+                    ClubUiState(it ?: Club(), true)
                 }.stateIn(
                     scope = viewModelScope,
                     started = kotlinx.coroutines.flow.SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
@@ -36,4 +36,4 @@ class ClubViewModel (savedStateHandle: SavedStateHandle,
 
 }
 
-data class ClubUiState (val club: Club = Club())
+data class ClubUiState (val club: Club = Club(), val isLoaded: Boolean = false)

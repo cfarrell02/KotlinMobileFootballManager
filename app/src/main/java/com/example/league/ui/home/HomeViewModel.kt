@@ -44,7 +44,7 @@ class HomeViewModel(private val leaguesRepository: LeagueRepository) : ViewModel
     }
 
     val homeUiState: StateFlow<HomeUiState> =
-        leaguesRepository.getAllLeaguesStream().map { HomeUiState(it) }
+        leaguesRepository.getAllLeaguesStream().map { HomeUiState(it, true) }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
@@ -58,4 +58,4 @@ class HomeViewModel(private val leaguesRepository: LeagueRepository) : ViewModel
 /**
  * Ui State for HomeScreen
  */
-data class HomeUiState(val leagueList: List<League> = listOf())
+data class HomeUiState(val leagueList: List<League> = listOf(), val isLoaded : Boolean = false)

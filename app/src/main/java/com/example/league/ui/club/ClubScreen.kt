@@ -33,6 +33,7 @@ import coil.compose.AsyncImage
 import com.example.league.LeagueTopAppBar
 import com.example.league.R
 import com.example.league.ui.AppViewModelProvider
+import com.example.league.ui.home.Loading
 import com.example.league.ui.navigation.NavigationDestination
 import org.setu.model.Club
 
@@ -52,17 +53,21 @@ fun ClubScreen(navigateBack: () -> Unit, navigateToEditClub: (Int) -> Unit, view
         topBar = { LeagueTopAppBar(title = stringResource(R.string.club_details), canNavigateBack = true, navigateUp = navigateBack) }
     ) {
         Column(modifier = Modifier.padding(it)) {
-            var showDialog by remember { mutableStateOf(false) }
-            ClubDetails(uiState.value.club, onDelete = {
-                showDialog = true
-            }, onEdit = { navigateToEditClub(uiState.value.club.uid) })
-            Spacer(modifier = Modifier.height(16.dp))
-            ConfirmationDialog(showDialog, onConfirm = {
-                viewModel.deleteClub(uiState.value.club)
-                navigateBack()
-            }, onDismiss = {
-                showDialog = false
-            })
+            if (!uiState.value.isLoaded) {
+                Loading()
+            } else {
+                var showDialog by remember { mutableStateOf(false) }
+                ClubDetails(uiState.value.club, onDelete = {
+                    showDialog = true
+                }, onEdit = { navigateToEditClub(uiState.value.club.uid) })
+                Spacer(modifier = Modifier.height(16.dp))
+                ConfirmationDialog(showDialog, onConfirm = {
+                    viewModel.deleteClub(uiState.value.club)
+                    navigateBack()
+                }, onDismiss = {
+                    showDialog = false
+                })
+            }
         }
     }
 
@@ -133,7 +138,6 @@ fun ClubDetails(club: Club, onDelete: () -> Unit, onEdit: () -> Unit) {
         ClubEditDeleteButtons(onDelete = onDelete , onEdit = onEdit)
         Divider()
         VenueDetails(club = club)
-        Divider()
 
     }
 }
@@ -154,6 +158,7 @@ fun VenueDetails(club: Club){
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+                Text(text = stringResource(R.string.venue), style = MaterialTheme.typography.titleLarge)
                 AsyncImage(
                     model = club.venueImageUrl,
                     contentDescription = stringResource(R.string.venue_image),

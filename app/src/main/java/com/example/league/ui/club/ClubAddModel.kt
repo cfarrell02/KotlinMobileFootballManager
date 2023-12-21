@@ -15,8 +15,8 @@ class ClubAddModel (savedStateHandle: SavedStateHandle, private val clubReposito
     private val leagueId: String =  checkNotNull(savedStateHandle[LeagueDestination.leagueId])
 
 
-    private val _searchResults: MutableStateFlow<List<Club>> = MutableStateFlow(emptyList())
-    val searchResults: StateFlow<List<Club>> = _searchResults
+    private val _searchResults: MutableStateFlow<ClubAddUiState> = MutableStateFlow(ClubAddUiState())
+    val searchResults: StateFlow<ClubAddUiState> = _searchResults
 
     fun insertClub(club: Club){
         viewModelScope.launch {
@@ -26,8 +26,11 @@ class ClubAddModel (savedStateHandle: SavedStateHandle, private val clubReposito
     }
 
     fun searchClub(query: String){
+        _searchResults.value = ClubAddUiState(isLoaded = false)
         viewModelScope.launch {
-            _searchResults.value = clubRepository.searchClub(query)
+            _searchResults.value = ClubAddUiState(clubRepository.searchClub(query), true)
         }
     }
 }
+
+data class ClubAddUiState(val clubList: List<Club> = listOf(), val isLoaded : Boolean = true)
