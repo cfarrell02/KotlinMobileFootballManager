@@ -7,17 +7,15 @@ import com.example.league.data.LeagueRepository
 import com.example.league.model.Item
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import org.setu.model.League
 
 class SearchViewModel (private val leagueRepository: LeagueRepository, private val clubRepository: ClubRepository) : ViewModel(){
-    private val _searchResults: MutableStateFlow<List<Item>> = MutableStateFlow(emptyList())
-    val searchResults: StateFlow<List<Item>> = _searchResults
+    private val _searchResults: MutableStateFlow<SearchUiState> = MutableStateFlow(SearchUiState())
+    val searchResults: StateFlow<SearchUiState> = _searchResults
 
      fun search(query: String) {
+         _searchResults.value = SearchUiState(isLoaded = false)
          viewModelScope.launch {
         val results = mutableListOf<Item>()
         leagueRepository.getAllLeaguesStream().first().forEach {
@@ -30,9 +28,11 @@ class SearchViewModel (private val leagueRepository: LeagueRepository, private v
                 results.add(it)
             }
         }
-        _searchResults.value = results
+        _searchResults.value = SearchUiState(results, true)
 
         }
     }
 
 }
+
+data class SearchUiState(val searchResults: List<Item> = listOf(), val isLoaded : Boolean = true)

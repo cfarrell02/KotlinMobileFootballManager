@@ -21,6 +21,9 @@ class ClubRepository (private val clubDao: ClubDao, private val leagueAPIService
     fun getClubsByLeagueId(leagueId: Int): Flow<List<Club>> = clubDao.getClubsByLeagueId(leagueId)
 
     suspend fun searchClub(query: String): List<Club>{
+        if (query.length < 3) {
+            return emptyList()
+        }
         val clubs = leagueAPIService.getTeams(teamName = query).response
         if (clubs != null) {
             return clubs.map { clubResponse ->
