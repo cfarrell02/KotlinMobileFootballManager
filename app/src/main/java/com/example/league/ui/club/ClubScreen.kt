@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -52,7 +54,7 @@ fun ClubScreen(navigateBack: () -> Unit, navigateToEditClub: (Int) -> Unit, view
     Scaffold(
         topBar = { LeagueTopAppBar(title = stringResource(R.string.club_details), canNavigateBack = true, navigateUp = navigateBack) }
     ) {
-        Column(modifier = Modifier.padding(it)) {
+        Column(modifier = Modifier.padding(it).verticalScroll(rememberScrollState())) {
             if (!uiState.value.isLoaded) {
                 Loading()
             } else {

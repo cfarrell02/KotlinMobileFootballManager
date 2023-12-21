@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
@@ -45,7 +47,7 @@ fun ClubEditScreen(
     Scaffold(
         topBar = { LeagueTopAppBar(title = stringResource(R.string.club_details), canNavigateBack = true, navigateUp = navigateBack) }
     ) {
-        Column (modifier = Modifier.padding(it)){
+        Column (modifier = Modifier.padding(it).verticalScroll(rememberScrollState())) {
             ClubEdit(club = viewModel.clubUiState.club, onClubChange = { viewModel.updateClubUiState(it) })
             ClubEditSaveButton(onSave = { viewModel.updateClub(viewModel.clubUiState.club)
                 navigateBack()})
@@ -102,6 +104,7 @@ fun ClubEdit(club: Club, onClubChange : (Club) -> Unit) {
                     venue, venueAddress, venueCity, venueCapacity, venueSurface, club.venueImageUrl, club.leagueId, club.uid))
             },
             label = { Text(stringResource(R.string.club_name)) },
+            isError = name.isEmpty(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -114,6 +117,7 @@ fun ClubEdit(club: Club, onClubChange : (Club) -> Unit) {
                     venue, venueAddress, venueCity, venueCapacity, venueSurface, club.venueImageUrl, club.leagueId, club.uid))
             },
             label = { Text(stringResource(R.string.club_country)) },
+            isError = country.isEmpty(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -126,6 +130,7 @@ fun ClubEdit(club: Club, onClubChange : (Club) -> Unit) {
                     venue, venueAddress, venueCity, venueCapacity, venueSurface, club.venueImageUrl, club.leagueId, club.uid))
             },
             label = { Text(stringResource(R.string.club_founded_year)) },
+            isError = founded.toString().isEmpty(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -138,6 +143,7 @@ fun ClubEdit(club: Club, onClubChange : (Club) -> Unit) {
                     venue, venueAddress, venueCity, venueCapacity, venueSurface,  club.venueImageUrl, club.leagueId, club.uid))
             },
             label = { Text(stringResource(R.string.club_venue)) },
+            isError = venue.isEmpty(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -150,6 +156,7 @@ fun ClubEdit(club: Club, onClubChange : (Club) -> Unit) {
                     venue, venueAddress, venueCity, venueCapacity, venueSurface,  club.venueImageUrl, club.leagueId, club.uid))
             },
             label = { Text(stringResource(R.string.club_venue_address)) },
+            isError = venueAddress.isEmpty(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)

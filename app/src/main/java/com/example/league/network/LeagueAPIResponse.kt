@@ -3,6 +3,8 @@ package com.example.league.network
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+//This API response class was generated using https://app.quicktype.io/
+
 @Serializable
 data class LeagueApiResponse(
     val get: String?,

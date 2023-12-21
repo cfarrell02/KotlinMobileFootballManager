@@ -66,4 +66,10 @@
     <string name="add_player">Add Player</string>
     <string name="venue">Venue Details</string>
     <string name="search">Search</string>
+    <string name="change_league_crest">Change League Crest</string>
+    <string name="club_and_name">Club: %1$s</string>
+    <string name="league_and_name">League: %1$s</string>
+    <string name="search_for_a_league">Search for a league</string>
+    <string name="no_search_results_found">No search results found.</string>
+    <string name="search_for_a_club">Search for a club</string>
 </resources>

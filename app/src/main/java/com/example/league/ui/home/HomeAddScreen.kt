@@ -52,14 +52,14 @@ fun HomeAddScreen(
     val context = LocalContext.current
 
     Scaffold(
-        topBar = { LeagueTopAppBar(title = "Add League", canNavigateBack = true, navigateUp = navigateBack) }
+        topBar = { LeagueTopAppBar(title = stringResource(R.string.add_league), canNavigateBack = true, navigateUp = navigateBack) }
     ) {
         Column(modifier = Modifier.padding(it)) {
             Column (modifier = Modifier.padding(16.dp)) {
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    label = { Text("Search for a league") },
+                    label = { Text(stringResource(R.string.search_for_a_league)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
@@ -85,7 +85,7 @@ fun HomeAddScreen(
                         }
                 } else {
                     Text(
-                        text = "No search results found.",
+                        text = stringResource(R.string.no_search_results_found),
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.padding(top = 8.dp)
                     )

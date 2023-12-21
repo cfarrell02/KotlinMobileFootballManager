@@ -1,6 +1,9 @@
 package com.example.league.ui.league
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -53,7 +56,7 @@ fun LeagueEditScreen(
         }
     ) {
         innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
+        Column(modifier = Modifier.padding(innerPadding).verticalScroll(rememberScrollState())) {
             LeagueEdit(
                 league = viewModel.leagueUiState.league,
                 onLeagueChange = { viewModel.updateLeagueUiState(it) }
@@ -85,10 +88,15 @@ fun LeagueEditSaveButton(onSave: () -> Unit) {
 }
 
 @Composable
-fun LeagueEdit(league: League, onLeagueChange: (League) -> Unit) {
+fun LeagueEdit(league: League, onLeagueChange: (League) -> Unit, onCrestChange: () -> Unit = {}) {
     var name by remember { mutableStateOf(league.name) }
     var country by remember { mutableStateOf(league.country) }
     var type by remember { mutableStateOf(league.type) }
+    var selectedImageUri by remember { mutableStateOf(league.crestUrl) }
+    val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = { uri -> selectedImageUri = uri.toString() }
+    )
 
     // Update state when league changes
     LaunchedEffect(league) {
@@ -101,13 +109,23 @@ fun LeagueEdit(league: League, onLeagueChange: (League) -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(16.dp)
     ) {
+        Row {
+            Button(onClick = {
+                singlePhotoPickerLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                onLeagueChange(League(name, country, type, selectedImageUri, league.countryFlagUrl, league.uid))
+            }) {
+                Text(stringResource(R.string.change_league_crest))
+            }
+        }
+
         OutlinedTextField(
             value = name,
             onValueChange = {
                 name = it
-                onLeagueChange(League(name, country, type, league.crestUrl, league.countryFlagUrl, league.uid))
+                onLeagueChange(League(name, country, type, selectedImageUri, league.countryFlagUrl, league.uid))
             },
             label = { Text(stringResource(R.string.league_name)) },
+            isError = name.isEmpty(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -116,9 +134,10 @@ fun LeagueEdit(league: League, onLeagueChange: (League) -> Unit) {
             value = country,
             onValueChange = {
                 country = it
-                onLeagueChange(League(name, country, type, league.crestUrl, league.countryFlagUrl, league.uid))
+                onLeagueChange(League(name, country, type, selectedImageUri, league.countryFlagUrl, league.uid))
             },
             label = { Text(stringResource(R.string.league_country)) },
+            isError = country.isEmpty(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
@@ -127,8 +146,9 @@ fun LeagueEdit(league: League, onLeagueChange: (League) -> Unit) {
             value = type,
             onValueChange = {
                 type = it
-                onLeagueChange(League(name, country, type, league.crestUrl, league.countryFlagUrl, league.uid))
+                onLeagueChange(League(name, country, type, selectedImageUri, league.countryFlagUrl, league.uid))
             },
+            isError = type.isEmpty(),
             label = { Text(stringResource(R.string.league_type)) },
             modifier = Modifier.fillMaxWidth()
         )

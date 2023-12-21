@@ -125,7 +125,7 @@ fun SearchItem (item : Item, navigateToClub : (Int) -> Unit, navigateToLeague : 
                 .fillMaxWidth()
                 .padding(16.dp)
                 .clickable { navigateToClub(item.uid) }) {
-                Text(text = "Club: ${item.name}")
+                Text(text = stringResource(R.string.club_and_name, item.name))
                 Spacer(modifier = Modifier.weight(1f))
                 Text(text = item.country)
             }
@@ -134,7 +134,7 @@ fun SearchItem (item : Item, navigateToClub : (Int) -> Unit, navigateToLeague : 
                 .fillMaxWidth()
                 .padding(16.dp)
                 .clickable { navigateToLeague(item.uid) }) {
-                Text(text = "League: ${item.name}")
+                Text(text = stringResource(R.string.league_and_name, item.name))
                 Spacer(modifier = Modifier.weight(1f))
                 Text(text = item.country)
             }

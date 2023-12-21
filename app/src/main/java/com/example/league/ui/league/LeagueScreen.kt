@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
@@ -79,7 +81,9 @@ fun LeagueScreen(
         }
     ) {
         innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding)) {
+        Column(modifier = Modifier
+            .padding(innerPadding)
+            .verticalScroll(rememberScrollState())) {
             var showDialog by remember { mutableStateOf(false) }
 
             LeagueDetails(
@@ -166,7 +170,7 @@ fun LeagueDetails(league: League) {
             )
             AsyncImage(
                 model = league.crestUrl,
-                contentDescription = "League logo",
+                contentDescription = stringResource(id = R.string.league_logo_alt, league.name),
                 modifier = Modifier
                     .size(50.dp)
                     .padding(start = 4.dp)

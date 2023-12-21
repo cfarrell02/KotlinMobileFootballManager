@@ -56,14 +56,14 @@ fun ClubAddScreen(
     val context = LocalContext.current
 
     Scaffold(
-        topBar = { LeagueTopAppBar(title = "Add Club", canNavigateBack = true, navigateUp = navigateBack) }
+        topBar = { LeagueTopAppBar(title = stringResource(id = R.string.add_club), canNavigateBack = true, navigateUp = navigateBack) }
     ) {
         Column(modifier = Modifier.padding(it)) {
             Column (modifier = Modifier.padding(16.dp)) {
                 OutlinedTextField(
                     value = searchQuery,
                     onValueChange = { searchQuery = it },
-                    label = { Text("Search for a club") },
+                    label = { Text(stringResource(R.string.search_for_a_club)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 8.dp),
