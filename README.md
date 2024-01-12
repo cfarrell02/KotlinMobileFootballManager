@@ -2,6 +2,8 @@
 
 Assignment details available @ https://tutors.dev/talk/setu-mad1/topic-00-assignments/unit-2/talk-assignment-2
 
+<ins>**API Key no longer works.**</ins>
+
 
 ## League Mobile App
 
